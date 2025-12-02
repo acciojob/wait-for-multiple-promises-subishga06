@@ -2,7 +2,7 @@ const output = document.getElementById("output");
 
 // Function to create a promise with random delay between 1–3 seconds
 function createPromise(num) {
-  const delay = Math.random() * 2 + 1; // 1–3 sec
+  const delay = Math.random() * 2 + 1; // 1–3 seconds
 
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -14,7 +14,7 @@ function createPromise(num) {
   });
 }
 
-// Create 3 promises
+// Create the three promises
 const p1 = createPromise(1);
 const p2 = createPromise(2);
 const p3 = createPromise(3);
@@ -26,13 +26,14 @@ const start = performance.now();
 Promise.all([p1, p2, p3]).then((results) => {
   const end = performance.now();
 
-  // Total = max delay (measured using performance time)
+  // Total time = time the longest promise took
   const totalTime = (end - start) / 1000;
 
   // Remove loading row
-  document.getElementById("loading-row").remove();
+  const loadingRow = document.getElementById("loading");
+  if (loadingRow) loadingRow.remove();
 
-  // Add each promise row
+  // Add each resolved promise row
   results.forEach((res) => {
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -42,7 +43,7 @@ Promise.all([p1, p2, p3]).then((results) => {
     output.appendChild(row);
   });
 
-  // Add total time row
+  // Add total row
   const totalRow = document.createElement("tr");
   totalRow.innerHTML = `
     <td>Total</td>
