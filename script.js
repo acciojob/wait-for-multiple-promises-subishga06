@@ -1,21 +1,14 @@
 const output = document.getElementById("output");
 
-// Add default loading row
-output.innerHTML = `
-  <tr id="loading-row">
-    <td colspan="2" class="text-center">Loading...</td>
-  </tr>
-`;
-
-// Function to create a promise with random delay
-function createPromise(promiseNumber) {
-  const delay = Math.random() * 2 + 1; // 1 to 3 seconds
+// Function to create a promise with random delay between 1–3 seconds
+function createPromise(num) {
+  const delay = Math.random() * 2 + 1; // 1–3 sec
 
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
-        name: `Promise ${promiseNumber}`,
-        time: delay
+        name: `Promise ${num}`,
+        time: delay,
       });
     }, delay * 1000);
   });
@@ -26,17 +19,20 @@ const p1 = createPromise(1);
 const p2 = createPromise(2);
 const p3 = createPromise(3);
 
-const startTime = performance.now();
+// Start time
+const start = performance.now();
 
-// Resolve all promises
+// Wait for all promises to resolve
 Promise.all([p1, p2, p3]).then((results) => {
-  const endTime = performance.now();
-  const totalTime = (endTime - startTime) / 1000; // Convert ms → s
+  const end = performance.now();
+
+  // Total = max delay (measured using performance time)
+  const totalTime = (end - start) / 1000;
 
   // Remove loading row
   document.getElementById("loading-row").remove();
 
-  // Add results for each promise
+  // Add each promise row
   results.forEach((res) => {
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -46,7 +42,7 @@ Promise.all([p1, p2, p3]).then((results) => {
     output.appendChild(row);
   });
 
-  // Add total row
+  // Add total time row
   const totalRow = document.createElement("tr");
   totalRow.innerHTML = `
     <td>Total</td>
